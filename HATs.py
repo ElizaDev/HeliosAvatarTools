@@ -47,12 +47,10 @@ class HATS_OT_my_op(bpy.types.Operator):
 
         if mytool.armature_list != None:
             print(bpy.context.scene.my_tool.armature_list)
-            #bpy.context.scene.unit_settings.scale_length = 0.01
-            #mytool.armature_list.
+            bpy.context.scene.unit_settings.scale_length = 0.01
             bpy.context.scene.my_tool.armature_list.select_set(True)
             bpy.ops.transform.resize(value=(100, 100, 100))
-            #context.scene.my_tool.armature_list.transform.resize(value=(100, 100, 100))
-            #bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
 
 
