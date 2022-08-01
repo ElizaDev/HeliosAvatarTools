@@ -1,15 +1,3 @@
-bl_info = {
-    "name": "Helios Avatar Tools",
-    "author": "ElizaByteVR",
-    "version": (1, 0),
-    "blender": (3, 1, 0),
-    "location": "N-Panel",
-    "description": "Adds various tools to help with Helios VR Conversion",
-    "warning": "",
-    "doc_url": "",
-    "category": "Tools",
-    }
-
 import bpy
 
 
@@ -17,7 +5,7 @@ class MyProperties(bpy.types.PropertyGroup):
 
     armature_list : bpy.props.PointerProperty(
         name= "Armature",
-        type= bpy.types.Armature
+        type= bpy.types.Object
     )
 
 
@@ -38,7 +26,6 @@ class HATS_PT_main_panel(bpy.types.Panel):
         layout.prop(mytool, "armature_list")
 
 
-
         row = layout.row()
         row.operator("hats.myop_operator")
 
@@ -52,22 +39,23 @@ class HATS_OT_my_op(bpy.types.Operator):
         scene = context.scene
         mytool = scene.my_tool
 
-        print(mytool.armature_list)
+        #print(mytool.armature_list)
 
         if mytool.armature_list == None:
             print('No Armature Selected')
             self.report({'INFO'}, "No Armature Selected")
 
         if mytool.armature_list != None:
-            print('Congrats you selected an armature')
+            print(bpy.context.scene.my_tool.armature_list)
             bpy.context.scene.unit_settings.scale_length = 0.01
+            bpy.context.scene.my_tool.armature_list.select_set(True)
             bpy.ops.transform.resize(value=(100, 100, 100))
-            bpy.context.scene.my_tool.armature_list = None
-            bpy.ops.object.select_all(action='SELECT')
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
 
+
         return {'FINISHED'}
+
 
 
 classes = [MyProperties, HATS_OT_my_op, HATS_PT_main_panel]
