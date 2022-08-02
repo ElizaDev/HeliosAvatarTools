@@ -47,9 +47,19 @@ class HATS_OT_my_op(bpy.types.Operator):
 
         if mytool.armature_list != None:
             print(bpy.context.scene.my_tool.armature_list)
+            
+            # Check to make sure Armature is named "Root". If not, change it.
+            if bpy.context.scene.my_tool.armature_list.data.name != "Root":
+                bpy.context.scene.my_tool.armature_list.data.name = "Root"
+            
+            # Set scene Unit Scale to 0.01
             bpy.context.scene.unit_settings.scale_length = 0.01
+            
+            # Select armature and resize using selected reference
             bpy.context.scene.my_tool.armature_list.select_set(True)
             bpy.ops.transform.resize(value=(100, 100, 100))
+            
+            #apply transforms using selected object
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
 
