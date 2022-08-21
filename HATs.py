@@ -58,7 +58,8 @@ class HATS_OT_my_op(bpy.types.Operator):
                 eb.head = (0, 0, 0)
                 eb.tail = (0, 0, 50)
                 ebs[0].parent = eb
-            
+                bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
             # Set scene Unit Scale to 0.01
             bpy.context.scene.unit_settings.scale_length = 0.01
             
@@ -68,8 +69,6 @@ class HATS_OT_my_op(bpy.types.Operator):
             
             #apply transforms using selected object
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-
-
 
         return {'FINISHED'}
 
