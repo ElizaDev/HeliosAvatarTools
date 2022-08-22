@@ -48,10 +48,17 @@ class HATS_OT_my_op(bpy.types.Operator):
         if mytool.armature_list != None:
             print(bpy.context.scene.my_tool.armature_list)
             
-            # Check to make sure The first bone in the armature is named "Root". If not, add new root bone and parent hips to it.
-            error = RootBoneCheck(self)
-            if error == True:
-                return {'CANCELLED'}
+            # Check to make sure The first bone in the armature is named "Root". If not, add new root bone and parent hips to it
+            if bpy.context.scene.my_tool.armature_list.data.bones[0].name != "Root":
+                bpy.context.scene.my_tool.armature_list.select_set(True)
+                bpy.ops.object.mode_set(mode='EDIT', toggle=False)
+                armatureObj = bpy.context.active_object
+                ebs = armatureObj.data.edit_bones
+                eb = ebs.new("Root")
+                eb.head = (0, 0, 0)
+                eb.tail = (0, 0, 50)
+                ebs[0].parent = eb
+                bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
             # Set scene Unit Scale to 0.01
             bpy.context.scene.unit_settings.scale_length = 0.01
@@ -62,32 +69,8 @@ class HATS_OT_my_op(bpy.types.Operator):
             
             #apply transforms using selected object
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-            
 
         return {'FINISHED'}
-
-def RootBoneCheck(self):
-    rootName = bpy.context.scene.my_tool.armature_list.data.bones[0].name.lower() # Get name of first bone in hierarchy
-    bpy.context.scene.my_tool.armature_list.select_set(True)
-    armatureObj = bpy.context.active_object
-    bpy.ops.object.mode_set(mode='EDIT', toggle=False) # Switch to Edit Mode
-    ebs = armatureObj.data.edit_bones
-    
-    if "root" not in rootName or "hip" in rootName: # Check if root already exits by name
-        eb = ebs.new("Root")
-        eb.head = (0, 0, 0)
-        eb.tail = (0, 0, 50)
-        ebs[0].parent = eb # Parent (presumed) Hips to new Root bone
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=False) # Back to Object Mode
-        return False
-
-    scale = armatureObj.scale[0] # Armature scale so the root offset check will work if the model is nt a scale of 1.
-    if "root" in rootName and ebs[0].head.z > 0.1 * scale: # Check to see if root bone is very offset form the armature origin
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=False) # Back to Object Mode
-        self.report({'WARNING'}, "Root bone not at base of model!")
-        return True
-        
-    bpy.ops.object.mode_set(mode='OBJECT', toggle=False) # Back to Object Mode
 
 
 
@@ -96,6 +79,7 @@ classes = [MyProperties, HATS_OT_my_op, HATS_PT_main_panel]
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+
         bpy.types.Scene.my_tool = bpy.props.PointerProperty(type= MyProperties)
 
 def unregister():
