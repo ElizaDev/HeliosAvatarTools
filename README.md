@@ -7,8 +7,8 @@ Check out the [Trello Board](https://trello.com/b/c1Q0FIWO/helios-avatar-tools) 
 
 ## Features
 
-- Adds or Renames Root Bone for Unreal Engine
-- Adjusts scale for Unreal Engine 
+- Adds or Renames Root Bone for use Unreal Engine
+- Adjusts scale for use Unreal Engine 
 
 ## Requirements
 
