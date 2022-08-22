@@ -48,10 +48,18 @@ class HATS_OT_my_op(bpy.types.Operator):
         if mytool.armature_list != None:
             print(bpy.context.scene.my_tool.armature_list)
             
-            # Check to make sure Armature is named "Root". If not, change it.
-            if bpy.context.scene.my_tool.armature_list.data.name != "Root":
-                bpy.context.scene.my_tool.armature_list.data.name = "Root"
-            
+            # Check to make sure The first bone in the armature is named "Root". If not, add new root bone and parent hips to it
+            if bpy.context.scene.my_tool.armature_list.data.bones[0].name != "Root":
+                bpy.context.scene.my_tool.armature_list.select_set(True)
+                bpy.ops.object.mode_set(mode='EDIT', toggle=False)
+                armatureObj = bpy.context.active_object
+                ebs = armatureObj.data.edit_bones
+                eb = ebs.new("Root")
+                eb.head = (0, 0, 0)
+                eb.tail = (0, 0, 50)
+                ebs[0].parent = eb
+                bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
             # Set scene Unit Scale to 0.01
             bpy.context.scene.unit_settings.scale_length = 0.01
             
@@ -61,8 +69,6 @@ class HATS_OT_my_op(bpy.types.Operator):
             
             #apply transforms using selected object
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-
-
 
         return {'FINISHED'}
 
