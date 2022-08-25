@@ -1,11 +1,15 @@
 import bpy
 
-
+    
 class MyProperties(bpy.types.PropertyGroup):
 
+    def filter_armature_objects(self, object):
+        return object.type == 'ARMATURE' # Return true only if object contains an Armature
+
     armature_list : bpy.props.PointerProperty(
-        name= "Armature",
-        type= bpy.types.Object
+        name = "Armature",
+        type = bpy.types.Object,
+        poll = filter_armature_objects # Use poll to filter through selection
     )
 
 
@@ -28,7 +32,6 @@ class HATS_PT_main_panel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("hats.myop_operator")
-
 
 
 class HATS_OT_my_op(bpy.types.Operator):
@@ -66,7 +69,9 @@ class HATS_OT_my_op(bpy.types.Operator):
 
         return {'FINISHED'}
 
+
 def RootBoneCheck(self):
+    
     rootName = bpy.context.scene.my_tool.armature_list.data.bones[0].name.lower() # Get name of first bone in hierarchy
     bpy.context.scene.my_tool.armature_list.select_set(True)
     armatureObj = bpy.context.active_object
