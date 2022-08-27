@@ -31,9 +31,9 @@ import bpy.utils.previews
 
 addon_keymaps = {}
 _icons = None
-class SNA_PT_FILE_MANAGEMENT_DE2ED(bpy.types.Panel):
+class SNA_PT_FILE_MANAGEMENT_6D4A9(bpy.types.Panel):
     bl_label = 'File Management'
-    bl_idname = 'SNA_PT_FILE_MANAGEMENT_DE2ED'
+    bl_idname = 'SNA_PT_FILE_MANAGEMENT_6D4A9'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_context = ''
@@ -80,16 +80,16 @@ class SNA_PT_FILE_MANAGEMENT_DE2ED(bpy.types.Panel):
         op.bake_space_transform = True
         op.mesh_smooth_type = 'OFF'
         op.add_leaf_bones = False
-        op.primary_bone_axis = 'Y'
-        op.secondary_bone_axis = 'X'
-        op.axis_forward = 'X'
+        op.primary_bone_axis = 'X'
+        op.secondary_bone_axis = '-Y'
+        op.axis_forward = '-Y'
         op.axis_up = 'Z'
 
 
 def register():
     global _icons
     _icons = bpy.utils.previews.new()
-    bpy.utils.register_class(SNA_PT_FILE_MANAGEMENT_DE2ED)
+    bpy.utils.register_class(SNA_PT_FILE_MANAGEMENT_6D4A9)
 
 
 def unregister():
@@ -100,4 +100,4 @@ def unregister():
     for km, kmi in addon_keymaps.values():
         km.keymap_items.remove(kmi)
     addon_keymaps.clear()
-    bpy.utils.unregister_class(SNA_PT_FILE_MANAGEMENT_DE2ED)
+    bpy.utils.unregister_class(SNA_PT_FILE_MANAGEMENT_6D4A9)
