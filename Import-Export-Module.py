@@ -11,19 +11,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-bl_info = {
-    "name" : "HATs Import/Export",
-    "author" : "ElizaByteVR", 
-    "description" : "Import/Export Models for Unreal Engine",
-    "blender" : (3, 0, 0),
-    "version" : (1, 0, 0),
-    "location" : "",
-    "warning" : "",
-    "doc_url": "", 
-    "tracker_url": "", 
-    "category" : "3D View" 
-}
-
 
 import bpy
 import bpy.utils.previews
@@ -31,22 +18,15 @@ import bpy.utils.previews
 
 addon_keymaps = {}
 _icons = None
-class SNA_PT_FILE_MANAGEMENT_6D4A9(bpy.types.Panel):
+class Import_Export_PT_main_panel(bpy.types.Panel):
     bl_label = 'File Management'
-    bl_idname = 'SNA_PT_FILE_MANAGEMENT_6D4A9'
+    bl_idname = 'Import_Export_PT_main_panel'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_context = ''
     bl_category = 'File Management'
     bl_order = 0
     bl_ui_units_x=0
-
-    @classmethod
-    def poll(cls, context):
-        return not (False)
-
-    def draw_header(self, context):
-        layout = self.layout
 
     def draw(self, context):
         layout = self.layout
@@ -86,18 +66,15 @@ class SNA_PT_FILE_MANAGEMENT_6D4A9(bpy.types.Panel):
         op.axis_up = 'Z'
 
 
-def register():
-    global _icons
-    _icons = bpy.utils.previews.new()
-    bpy.utils.register_class(SNA_PT_FILE_MANAGEMENT_6D4A9)
+classes = [Import_Export_PT_main_panel]
 
+def register():
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
 def unregister():
-    global _icons
-    bpy.utils.previews.remove(_icons)
-    wm = bpy.context.window_manager
-    kc = wm.keyconfigs.addon
-    for km, kmi in addon_keymaps.values():
-        km.keymap_items.remove(kmi)
-    addon_keymaps.clear()
-    bpy.utils.unregister_class(SNA_PT_FILE_MANAGEMENT_6D4A9)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
+
+if __name__ == "__main__":
+    register()
