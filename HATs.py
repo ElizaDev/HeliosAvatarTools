@@ -1,6 +1,18 @@
 import bpy
 
-    
+bl_info = {
+    "name": "Helios Avatar Tools",
+    "description": "Helios Avatar Tools",
+    "author": "ElizaByteVR, CascadianWorks",
+    "version": (0, 1),
+    "blender": (3, 2, 2),
+    "location": "View 3D > Properties Panel",
+    "doc_url": "",
+    "tracker_url": "",
+    "support": "COMMUNITY",
+    "category": "3D View",
+}
+
 class MyProperties(bpy.types.PropertyGroup):
 
     def filter_armature_objects(self, object):
