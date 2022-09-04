@@ -56,13 +56,16 @@ class Import_Export_PT_main_panel(bpy.types.Panel):
         op.axis_up = 'Z'
         op = row_B9B4B.operator('export_scene.fbx', text='Export', icon_value=707, emboss=True, depress=False)
         op.apply_unit_scale = False
+        # Dont have to change blender scene units if we set this here
+        op.global_scale=0.01
         op.use_space_transform = False
         op.bake_space_transform = True
         op.mesh_smooth_type = 'OFF'
         op.add_leaf_bones = False
         op.primary_bone_axis = 'X'
         op.secondary_bone_axis = '-Y'
-        op.axis_forward = '-Y'
+        # Y Forward for unreal characters
+        op.axis_forward = 'Y'
         op.axis_up = 'Z'
 
 

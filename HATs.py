@@ -66,10 +66,10 @@ class HATS_OT_my_op(bpy.types.Operator):
             # Check to make sure The first bone in the armature is named "Root". If not, add new root bone and parent hips to it.
             error = RootBoneCheck(self)
             if error == True:
-                return {'CANCELLED'}
-
-            # Set scene Unit Scale to 0.01
-            bpy.context.scene.unit_settings.scale_length = 0.01
+              return {'CANCELLED'}
+           # not needed if we do it in export settings
+           # Set scene Unit Scale to 0.01
+           # bpy.context.scene.unit_settings.scale_length = 0.01
             
             # Select armature and resize using selected reference
             bpy.context.scene.my_tool.armature_list.select_set(True)
@@ -91,9 +91,11 @@ def RootBoneCheck(self):
     ebs = armatureObj.data.edit_bones
     
     if "root" not in rootName or "hip" in rootName: # Check if root already exits by name
+        # create new root bone
         eb = ebs.new("Root")
         eb.head = (0, 0, 0)
-        eb.tail = (0, 0, 50)
+        # use hips position as tail length from root -> hips
+        eb.tail = (0, 0, ebs[0].matrix[2][3])
         ebs[0].parent = eb # Parent (presumed) Hips to new Root bone
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False) # Back to Object Mode
         return False
